@@ -28,16 +28,52 @@ private:
 	bool possedeLesFilms_ = false; // Les films seront détruits avec la liste si elle les possède.
 };
 
-struct ListeActeurs {
+
+class ListeActeurs
+{
+	ListeActeurs(int taille);
+	ListeActeurs() = default;
+	span<Acteur*> spanListeActeurs() const;
+	void setElements(int taille);
+	void setListe(unique_ptr<Acteur* []> nouvelleListe);
+	void setCapacity(int taille);
+	int getElements();
+	int getCapacity();
 	int capacite, nElements;
-	Acteur** elements; // Pointeur vers un tableau de Acteur*, chaque Acteur* pointant vers un Acteur.
+	unique_ptr<Acteur* []> elements; // Pointeur vers un tableau de Acteur*, chaque Acteur* pointant vers un Acteur.
 };
 
-struct Film
+class Film
 {
-	std::string titre, realisateur; // Titre et nom du réalisateur (on suppose qu'il n'y a qu'un réalisateur).
-	int anneeSortie, recette; // Année de sortie et recette globale du film en millions de dollars
+public:
+
+	//constructeur
+	Film(const string& titre, const string& realisateur, int anneeSortie, double recette, ListeActeurs acteurs);
+
+	//destructeur
+	~Film();
+
+	//accesseurs
+	string getTitre() const;
+	string getRealisateur() const;
+	int getAnneeSortie() const;
+	double getRecette();
+	ListeActeurs getActeurs() const;
+
+	//surchage de l'opérateur
+	friend ostream& operator<<(ostream& os, const Film& film);
+
+private:
+	string titre;
+	string realisateur;
+	int anneeSortie;
+	double recette;
 	ListeActeurs acteurs;
+
+
+	/*std::string titre, realisateur; // Titre et nom du réalisateur (on suppose qu'il n'y a qu'un réalisateur).
+	int anneeSortie, recette; // Année de sortie et recette globale du film en millions de dollars
+	ListeActeurs acteurs;*/
 };
 
 struct Acteur
