@@ -9,6 +9,12 @@ using gsl::span;
 struct Film; struct Acteur; // Permet d'utiliser les types alors qu'ils seront défini après.
 
 class ListeFilms {
+
+	Film& operator[](int index) const
+	{
+		return *elements[index];
+	}
+
 public:
 	ListeFilms() = default;
 	ListeFilms(const std::string& nomFichier);
@@ -19,6 +25,14 @@ public:
 	Acteur* trouverActeur(const std::string& nomActeur) const;
 	span<Film*> enSpan() const;
 	int size() const { return nElements; }
+	
+	Film* chercherFIlm(const auto& critere)
+	{
+		for (auto&& film; enSpan())
+			if (critere(film))
+				return film;
+		return nullptr;
+	};
 
 private:
 	void changeDimension(int nouvelleCapacite);
@@ -62,6 +76,25 @@ public:
 
 	//surchage de l'opérateur
 	friend ostream& operator<<(ostream& os, const Film& film);
+
+	//Deepcopy des films
+	Film() = default;
+	Film(Film& other)
+	{
+		*this = other;
+	}
+	Film& operator=(Film & other)
+	{
+		if (&other == this)
+			return *this;
+		titre = other.titre;
+		realisateur = other.realisateur;
+		anneeSortie = other.anneeSortie;
+		recette = other.recette;
+		for (int i = 0; i < other.acteurs.getCapacity(); i++)
+			acteurs.elements[i] = other.acteurs.elements[i];
+		return *this;
+	}
 
 private:
 	string titre;

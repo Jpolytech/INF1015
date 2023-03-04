@@ -203,15 +203,21 @@ void afficherActeur(const Acteur& acteur)
 }
 
 //TODO: Une fonction pour afficher un film avec tous ces acteurs (en utilisant la fonction afficherActeur ci-dessus).
-void operator<<(ostream& os, const Film& film)
+void afficherFilm(const Film& film, ostream& os)
 {
 	os << "Titre: " << film.titre << endl;
 	os << "  Réalisateur: " << film.realisateur << "  Année :" << film.anneeSortie << endl;
 	os << "  Recette: " << film.recette << "M$" << endl;
 
 	os << "Acteurs:" << endl;
-	for (const Acteur* acteur : film.acteurs)
+	for(const shared_ptr<Acteur> : film.acteurs.spanListeActeurs())
 		afficherActeur(*acteur);
+}
+
+ostream& operator<<(ostream& os, const Film& film)
+{
+	afficherFilm(film, os);
+	return os;
 }
 
 void afficherListeFilms(const ListeFilms& listeFilms)
@@ -279,6 +285,13 @@ int main()
 	cout << ligneDeSeparation << "Les films sont maintenant:" << endl;
 	//TODO: Afficher la liste des films.
 	afficherListeFilms(listeFilms);
+
+	Film skylien = listeFilms[0];
+	skylien.titre = "Skylien";
+	listeFilms[0].acteurs.elements[0] = listeFilms[1].acteurs.elements[0];
+	ListeFilms[0].acteurs.elements[0]->nom = "Daniel Wroughton Craig";
+
+	cout << 
 
 	//TODO: Faire les appels qui manquent pour avoir 0% de lignes non exécutées dans le programme (aucune ligne rouge dans la couverture de code; c'est normal que les lignes de "new" et "delete" soient jaunes).  Vous avez aussi le droit d'effacer les lignes du programmes qui ne sont pas exécutée, si finalement vous pensez qu'elle ne sont pas utiles.
 	// Les lignes à mettre ici dépendent de comment ils ont fait leurs fonctions.  Dans mon cas:
